@@ -1,0 +1,79 @@
+@import url(https://fonts.googleapis.com/css?family=Fira+Mono);
+body, html, #root{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width:100%;
+  overflow: hidden;
+  font-family: 'Fira Mono' !important;
+}
+.application{
+  width: 100%;
+  height: 100%;
+}
+#editor{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #333;
+}
+.CodeMirror{
+  width: 100%;
+  height: calc(65% - 2rem);
+  padding: 2rem 15rem;
+  background: #1D1F21 !important;
+  font-family: 'Fira Mono' !important;
+
+}
+.CodeMirror-gutters{
+  background: #1D1F21 !important;
+}
+.CodeMirror-linenumbers{
+  color: #1D1F21 !important;
+}
+#results{
+  width: 100%;
+  height: calc(25% - 1rem);
+  position: absolute;
+  bottom:0;
+  background: #1D1F21;
+  padding: 2rem 15.5rem;
+  color: #666;
+  border-top: 1px solid #232529;
+  overflow-y: scroll;
+}
+.error{
+  color: #ac4142;
+}
+#fileloader{
+  position: absolute;
+  left: 2rem;
+  top: 2.3rem;
+  color: #666;
+}
+.file{
+  text-decoration: none;
+  color: #666;
+}
+i{
+  padding-bottom: 0.5rem;
+}
+.file:hover{
+  color:#888;
+}
+.newFile {
+  position: absolute;
+  top: 2rem;
+  right: 2em;
+  z-index: 100;
+  font-size: 20pt;
+  color: #666;
+  padding: none;
+  margin: none;
+  text-decoration: none;
+}
+.newFile:hover{
+  color:#888;
+}
