@@ -1,2 +1,2 @@
 # zenbin
-Super simple javascript evaluation, with localstorage snippets.
+Super simple javascript evaluation, with localstorage snippets
