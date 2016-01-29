@@ -96,11 +96,11 @@ $(document).ready(() => {
 
         if (localStorage.getItem(`${key}-name`) !== null && localStorage.getItem(`${key}-name`)) {
           $('#fileloader').append(
-            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file"></i> ${localStorage.getItem(`${key}-name`)}</a><br />`
+            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file-text"></i> ${localStorage.getItem(`${key}-name`)}</a><br />`
           )
         } else {
           $('#fileloader').append(
-            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file"></i> ${key}</a><br />`
+            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file-text"></i> ${key}</a><br />`
           )
         }
       }
