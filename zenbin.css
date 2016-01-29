@@ -39,7 +39,7 @@ body, html, #root{
   position: absolute;
   bottom:0;
   background: #1D1F21;
-  padding: 2rem 15.5rem;
+  padding: 2rem 2rem;
   color: #666;
   border-top: 1px solid #232529;
   overflow-y: scroll;
@@ -52,13 +52,21 @@ body, html, #root{
   left: 2rem;
   top: 2.3rem;
   color: #666;
+  height: 64%;
+  padding-right: 1rem;
+  overflow-y: scroll;
 }
 .file{
   text-decoration: none;
   color: #666;
+  width: 10rem;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-i{
-  padding-bottom: 0.5rem;
+.active{
+  color: #6a9fb5;
 }
 .file:hover{
   color:#888;

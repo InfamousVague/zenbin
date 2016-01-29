@@ -58,6 +58,13 @@ $(document).ready(() => {
   };
 
   const setValue = function() {
+    let code = myCodeMirror.getValue();
+    let hasfilename = code.match(/\/\/ zenbin:name(.*)/);
+    let filename = false;
+    if (hasfilename) {
+      filename = hasfilename[0].split('(')[1].replace(')', '');
+      localStorage.setItem(`${uid}-name`, filename);
+    }
     localStorage.setItem(uid, myCodeMirror.getValue());
   }
   //============================================================================
@@ -84,9 +91,19 @@ $(document).ready(() => {
   //============================================================================
   for (var key in localStorage){
     if (key !== 'null') {
-      $('#fileloader').append(
-        `<a href="/?zen=${key}" class="file"><i class="fa fa-file"></i> ${key}</a><br />`
-      )
+      if (!key.match(/.*-name/)) {
+        let active = (key === uid) ? 'active' : '';
+
+        if (localStorage.getItem(`${key}-name`) !== null && localStorage.getItem(`${key}-name`)) {
+          $('#fileloader').append(
+            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file"></i> ${localStorage.getItem(`${key}-name`)}</a><br />`
+          )
+        } else {
+          $('#fileloader').append(
+            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file"></i> ${key}</a><br />`
+          )
+        }
+      }
     }
   }
 
@@ -96,13 +113,13 @@ $(document).ready(() => {
   console._log_old = console.log;
   console.log = (msg) => {
     result.append(`<div class="line">${msg}</div>`);
-    result.scrollTop = result.scrollHeight;
+    $('#results').scrollTop = $('#results').scrollHeight;
     console._log_old(msg);
   }
   window.onerror = (msg) => {
     setValue();
     result.append(`<div class="line error">${msg}</div>`);
-    result.scrollTop = result.scrollHeight;
+    $('#results').scrollTop = $('#results').scrollHeight;
   }
   eval(myCodeMirror.getValue());
 
