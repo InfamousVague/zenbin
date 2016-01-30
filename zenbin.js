@@ -1,4 +1,5 @@
 'use strict';
+// Grab query string values
 let QueryString = function () {
   // This function is anonymous, is executed immediately and
   // the return value is assigned to QueryString!
@@ -9,15 +10,25 @@ let QueryString = function () {
     let pair = lets[i].split("=");
     if (typeof query_string[pair[0]] === "undefined") {
       query_string[pair[0]] = decodeURIComponent(pair[1]);
-    } else if (typeof query_string[pair[0]] === "string") {
+    } else if(typeof query_string[pair[0]] === "string") {
       let arr = [query_string[pair[0]],decodeURIComponent(pair[1])];
       query_string[pair[0]] = arr;
     } else {
       query_string[pair[0]].push(decodeURIComponent(pair[1]));
     }
   }
-    return query_string;
+  return query_string;
 }();
+
+// Generate guid
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return `${s4()}-${s4()}-${s4()}`;
+};
 
 $(document).ready(() => {
   let editor = $('#editor');
@@ -31,7 +42,6 @@ $(document).ready(() => {
     foldGutter: true,
     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
   });
-
 
   //============================================================================
   // If script exists in localstorage, load it. ================================
@@ -48,14 +58,9 @@ $(document).ready(() => {
     window.history.pushState(null, 'Zenbin.io', `?zen=${uid}`);
   }
 
-  function guid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return `${s4()}-${s4()}-${s4()}`;
-  };
+  //============================================================================
+  // Set files to localStorage items. ==========================================
+  //============================================================================
 
   const setValue = function() {
     let code = myCodeMirror.getValue();
@@ -67,9 +72,11 @@ $(document).ready(() => {
     }
     localStorage.setItem(uid, myCodeMirror.getValue());
   }
+
   //============================================================================
   // Eval code when user stops typing. =========================================
   //============================================================================
+
   let typingTimer;
   const doneTypingInterval = 2000;
 
@@ -83,33 +90,67 @@ $(document).ready(() => {
   });
 
   function doneTyping () {
+    let evalStart = new Date().getTime();
     eval(myCodeMirror.getValue());
     setValue();
+    setDownload();
+    initNames();
+    let evalEnd = new Date().getTime();
+    $('#execute').html(`executed in ${evalEnd - evalStart}ms`);
   }
-  //============================================================================
-  // Build zenscript loader. ===================================================
-  //============================================================================
-  for (var key in localStorage){
-    if (key !== 'null') {
-      if (!key.match(/.*-name/)) {
-        let active = (key === uid) ? 'active' : '';
 
-        if (localStorage.getItem(`${key}-name`) !== null && localStorage.getItem(`${key}-name`)) {
-          $('#fileloader').append(
-            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file-text"></i> ${localStorage.getItem(`${key}-name`)}</a><br />`
-          )
-        } else {
-          $('#fileloader').append(
-            `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file-text"></i> ${key}</a><br />`
-          )
+  //============================================================================
+  // Delete active file. =======================================================
+  //============================================================================
+
+  $('#trash').click(function() {
+    localStorage.removeItem(uid);
+    initNames();
+  });
+
+  //============================================================================
+  // Download active file. =====================================================
+  //============================================================================
+
+  const setDownload = function(string) {
+    $('#download').html(
+      `<a href="data:application/octet-stream,${encodeURIComponent(myCodeMirror.getValue())}"><i class="fa fa-download"></i></a>`
+    );
+  };
+
+  setDownload();
+
+  //============================================================================
+  // Build zenscript file tree. ================================================
+  //============================================================================
+
+  const initNames = function() {
+    $('#fileloader').html('');
+    for (var key in localStorage){
+      if (key !== 'null') {
+        if (!key.match(/.*-name/)) {
+          let active = (key === uid) ? 'active' : '';
+
+          if (localStorage.getItem(`${key}-name`) !== null && localStorage.getItem(`${key}-name`)) {
+            $('#fileloader').append(
+              `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file-text"></i> ${localStorage.getItem(`${key}-name`)}</a><br />`
+            )
+          } else {
+            $('#fileloader').append(
+              `<a href="/?zen=${key}" class="file ${active}"><i class="fa fa-file-text"></i> ${key}</a><br />`
+            )
+          }
         }
       }
     }
-  }
+  };
+
+  initNames();
 
   //============================================================================
   // Clone console events for reporting to results. ============================
   //============================================================================
+  
   console._log_old = console.log;
   console.log = (msg) => {
     result.append(`<div class="line">${msg}</div>`);

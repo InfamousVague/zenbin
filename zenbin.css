@@ -5,7 +5,12 @@ body, html, #root{
   height: 100%;
   width:100%;
   overflow: hidden;
+  background: #1D1F21;
   font-family: 'Fira Mono' !important;
+}
+
+::-webkit-scrollbar{
+  display:none;
 }
 .application{
   width: 100%;
@@ -40,7 +45,7 @@ body, html, #root{
   bottom:0;
   background: #1D1F21;
   padding: 2rem 2rem;
-  color: #666;
+  color: #ccc;
   border-top: 1px solid #232529;
   overflow-y: scroll;
 }
@@ -50,15 +55,15 @@ body, html, #root{
 #fileloader{
   position: absolute;
   left: 2rem;
-  top: 2.3rem;
-  color: #666;
-  height: 64%;
+  top: 4.3rem;
+  color: #ccc;
+  height: 63%;
   padding-right: 1rem;
   overflow-y: scroll;
 }
 .file{
   text-decoration: none;
-  color: #666;
+  color: #ccc;
   width: 10rem;
   display: block;
   white-space: nowrap;
@@ -68,19 +73,35 @@ body, html, #root{
 .active{
   color: #6a9fb5;
 }
-.file:hover{
-  color:#888;
-}
-.newFile {
-  position: absolute;
-  top: 2rem;
-  right: 2em;
+.newFile, #download, #trash{
+  float: left;
   z-index: 100;
-  color: #666;
+  color: #ccc;
   padding: none;
   margin: none;
   text-decoration: none;
+  padding-right: 1rem;
 }
-.newFile:hover{
-  color:#888;
+#menu {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 100;
+  width: 11rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #232529;
+}
+#download a{
+  color: #ccc;
+  text-decoration: none;
+}
+.file:hover, .newFile:hover, #download a:hover, #trash:hover{
+  cursor: pointer;
+  color:#fff;
+}
+#execute{
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  color: #333;
 }
